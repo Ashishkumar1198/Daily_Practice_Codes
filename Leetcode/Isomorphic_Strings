@@ -1,0 +1,60 @@
+/*  
+    Day 7 – Isomorphic Strings (LeetCode 205)
+
+    Approach Used:
+    Bidirectional Mapping (Hash Maps)
+    ----------------------------------
+    - Two strings are isomorphic if:
+          each character in string s maps to exactly one character in t,
+          AND each character in t maps back uniquely to s.
+    - We maintain two hash maps:
+          m1: s -> t mapping
+          m2: t -> s mapping
+    - For each position i:
+          • If s[i] is already mapped, it must match t[i]
+          • If t[i] is already mapped, it must match s[i]
+    - If any mismatch occurs → not isomorphic.
+
+    Why this works:
+    - Handles 1-to-1 mapping correctly.
+    - Prevents conflicts like mapping 'a' to both 'x' and 'y'.
+    - Ensures reverse consistency as well.
+
+    Time Complexity: O(n)
+    Space Complexity: O(1)  (at most 256 ASCII characters)
+
+    How to Run:
+    g++ IsomorphicStrings.cpp -o run
+    ./run
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char,char> m1, m2;
+        for (int i = 0; i < s.size(); i++) {
+            char a = s[i], b = t[i];
+            if (m1.count(a) && m1[a] != b) return false;
+            if (m2.count(b) && m2[b] != a) return false;
+            m1[a] = b;
+            m2[b] = a;
+        }
+        return true;
+    }
+};
+
+int main() {
+    string s = "egg";
+    string t = "add";
+
+    Solution obj;
+
+    cout << "Is Isomorphic: " 
+         << (obj.isIsomorphic(s, t) ? "true" : "false") 
+         << endl;
+
+    return 0;
+}
